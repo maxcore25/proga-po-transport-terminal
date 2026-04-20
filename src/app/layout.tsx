@@ -1,7 +1,7 @@
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/sonner"
-import { TooltipProvider } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
+import { ThemeProvider } from "@/src/components/theme-provider"
+import { Toaster } from "@/src/components/ui/sonner"
+import { TooltipProvider } from "@/src/components/ui/tooltip"
+import { cn } from "@/src/lib/utils"
 import { Geist_Mono, Inter } from "next/font/google"
 import "./globals.css"
 
