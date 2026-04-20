@@ -1,0 +1,13 @@
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8888';
+export const BASE_API_URL = `${BASE_URL}/api/v1`;
+
+export const QUERY_KEYS = {
+  USER: 'USER',
+  USERS: 'USERS',
+  USER_ME: 'USER_ME',
+} as const;
+
+export const LOCAL_STORAGE_KEYS = {
+  ACCESS_TOKEN: 'accessToken',
+} as const;
