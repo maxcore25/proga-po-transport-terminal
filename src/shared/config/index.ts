@@ -11,3 +11,6 @@ export const QUERY_KEYS = {
 export const LOCAL_STORAGE_KEYS = {
   ACCESS_TOKEN: 'accessToken',
 } as const;
+
+export const roles = ['admin', 'user'] as const;
+export type Role = (typeof roles)[number];
