@@ -5,8 +5,8 @@ export const createTransactionSchema = z.object({
   amount: z.number().int().min(1),
   balanceBefore: z.number().int().min(0),
   balanceAfter: z.number().int().min(0),
-  cardId: z.uuid(),
-  terminalId: z.uuid(),
+  cardId: z.guid(),
+  terminalId: z.guid(),
   status: transactionStatusSchema,
   declineReason: z.string().optional(),
 });

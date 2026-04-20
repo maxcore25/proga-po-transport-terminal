@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
 export const cardSchema = z.object({
-  id: z.uuid(),
+  id: z.guid(),
   cardNumber: z.string().min(1),
   ownerName: z.string().min(1),
-  keyId: z.uuid(),
+  keyId: z.guid(),
   balance: z.number().int(),
   isBlocked: z.boolean(),
   blockReason: z.string().nullable().optional(),

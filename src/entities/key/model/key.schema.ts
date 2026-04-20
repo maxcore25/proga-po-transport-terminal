@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const keyTypeSchema = z.enum(['A', 'B']);
 
 export const keySchema = z.object({
-  id: z.uuid(),
+  id: z.guid(),
   name: z.string().min(1),
   keyType: keyTypeSchema,
   keyValue: z.string().min(1),

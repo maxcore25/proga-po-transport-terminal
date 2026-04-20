@@ -2,7 +2,7 @@ import { roles } from '@/shared/config';
 import { z } from 'zod';
 
 export const jwtPayloadSchema = z.object({
-  sub: z.uuid(),
+  sub: z.guid(),
   exp: z.number(),
   iat: z.number(),
   role: z.enum(roles),

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 export const terminalSchema = z.object({
-  id: z.uuid(),
+  id: z.guid(),
   name: z.string().min(1),
   serialNumber: z.string().min(1),
   location: z.string().min(1),

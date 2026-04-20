@@ -3,12 +3,12 @@ import { z } from 'zod';
 export const transactionStatusSchema = z.enum(['approved', 'declined']);
 
 export const transactionSchema = z.object({
-  id: z.uuid(),
+  id: z.guid(),
   amount: z.number().int(),
   balanceBefore: z.number().int(),
   balanceAfter: z.number().int(),
-  cardId: z.uuid(),
-  terminalId: z.uuid(),
+  cardId: z.guid(),
+  terminalId: z.guid(),
   status: transactionStatusSchema,
   declineReason: z.string().nullable().optional(),
   createdAt: z.iso.datetime({ offset: true }),
