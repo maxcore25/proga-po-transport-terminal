@@ -2,7 +2,7 @@ import { LoginPage } from '@/_pages/login';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Логин | CodeCraft',
+  title: 'Логин',
 };
 
 export default function LoginRoute() {

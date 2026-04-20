@@ -26,8 +26,7 @@ import {
   DropdownMenuTrigger,
 } from '@/shared/ui/dropdown-menu';
 import { Label } from '@/shared/ui/label';
-import { LevelBadge } from '@/shared/ui/level-badge';
-import { RoleBadge } from '@/shared/ui/role-badge';
+// import { RoleBadge } from '@/shared/ui/role-badge';
 import {
   Select,
   SelectContent,
@@ -134,30 +133,21 @@ const columns: ColumnDef<User>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: 'fullname',
+    accessorKey: 'fullName',
     header: 'ФИО',
     cell: ({ row }) => <TableCellViewer item={row.original} />,
     enableHiding: false,
   },
   {
-    accessorKey: 'email',
-    header: 'Почта',
-    cell: ({ row }) => row.original.email,
-  },
-  {
-    accessorKey: 'phone',
-    header: 'Телефон',
-    cell: ({ row }) => row.original.phone ?? '-',
+    accessorKey: 'username',
+    header: 'Username',
+    cell: ({ row }) => row.original.username,
   },
   {
     accessorKey: 'role',
     header: 'Роль',
-    cell: ({ row }) => <RoleBadge role={row.original.role} />,
-  },
-  {
-    accessorKey: 'knowledgeLevel',
-    header: 'Уровень знаний',
-    cell: ({ row }) => <LevelBadge level={row.original.knowledgeLevel} />,
+    // cell: ({ row }) => <RoleBadge role={row.original.role} />,
+    cell: ({ row }) => (row.original.isAdmin ? 'Админ' : 'Пользователь'),
   },
   {
     accessorKey: 'createdAt',
@@ -431,7 +421,7 @@ function TableCellViewer({ item }: { item: User }) {
     <Drawer direction={isMobile ? 'bottom' : 'right'}>
       <DrawerTrigger asChild>
         <Button variant='link' className='text-foreground w-fit px-0 text-left'>
-          {item.lastName} {item.firstName} {item.middleName}
+          {item.fullName}
         </Button>
       </DrawerTrigger>
       <DrawerContent>
@@ -446,9 +436,7 @@ function TableCellViewer({ item }: { item: User }) {
             </div>
             <div>
               <Label>ФИО</Label>
-              <div className='mt-1'>
-                {item.lastName} {item.firstName} {item.middleName}
-              </div>
+              <div className='mt-1'>{item.fullName}</div>
             </div>
             <div>
               <Label>Создано</Label>

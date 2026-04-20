@@ -2,10 +2,10 @@ import { z } from 'zod';
 
 export const updateUserSchema = z
   .object({
-    firstName: z.string(),
-    lastName: z.string(),
-    middleName: z.string(),
-    email: z.email(),
+    fullName: z.string(),
+    username: z.string(),
+    isAdmin: z.boolean(),
+    isActive: z.boolean(),
   })
   .partial();
 

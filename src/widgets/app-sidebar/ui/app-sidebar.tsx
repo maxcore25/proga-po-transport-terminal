@@ -10,13 +10,13 @@ import {
 import { NavMain } from '@/widgets/app-sidebar/ui/nav-main';
 import { NavUser } from '@/widgets/app-sidebar/ui/nav-user';
 import { TeamSwitcher } from '@/widgets/app-sidebar/ui/team-switcher';
-import { Code2, Home } from 'lucide-react';
+import { Bus, Home } from 'lucide-react';
 import * as React from 'react';
 
 const data = {
   team: {
-    name: 'CodeCraft',
-    logo: Code2,
+    name: 'Админ панель',
+    logo: Bus,
   },
   navMain: [
     {

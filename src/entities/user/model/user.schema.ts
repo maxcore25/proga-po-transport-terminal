@@ -2,9 +2,10 @@ import { z } from 'zod';
 
 export const userSchema = z.object({
   id: z.uuid(),
-  firstName: z.string().min(1),
-  lastName: z.string().min(1),
-  email: z.email(),
+  fullName: z.string().min(1),
+  username: z.string().min(1),
+  isAdmin: z.boolean(),
+  isActive: z.boolean(),
   createdAt: z.iso.datetime({ offset: true }),
   updatedAt: z.iso.datetime({ offset: true }),
 });
