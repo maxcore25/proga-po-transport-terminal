@@ -10,19 +10,13 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/ui/form';
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 import { PasswordInput } from '@/shared/ui/password-input';
 import { Spinner } from '@/shared/ui/spinner';
-import { useLoginForm } from '../model/use-login-form';
 import Link from 'next/link';
+import { Controller } from 'react-hook-form';
+import { useLoginForm } from '../model/use-login-form';
 
 export function LoginForm({
   className,
@@ -39,49 +33,56 @@ export function LoginForm({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-            <FormField
-              control={form.control}
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <FieldGroup>
+            <Controller
               name='email'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Почта</FormLabel>
-                  <FormControl>
-                    <Input
-                      type='email'
-                      autoFocus
-                      {...field}
-                      className='h-auto py-3'
-                    />
-                  </FormControl>
-                  <FormMessage className='h-[20px]' />
-                </FormItem>
-              )}
-            />
-            <FormField
               control={form.control}
-              name='password'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Пароль</FormLabel>
-                  <FormControl>
-                    <PasswordInput {...field} className='h-auto py-3' />
-                  </FormControl>
-                  <FormMessage className='h-[20px]' />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Почта</FieldLabel>
+                  <Input
+                    type='email'
+                    autoFocus
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    className='h-auto py-3'
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
-            <Button
-              type='submit'
-              className='mt-6! h-auto w-full gap-2 py-3'
-              disabled={isPending}
-            >
-              {isPending ? <Spinner /> : null}
-              Войти
-            </Button>
-          </form>
-        </Form>
+            <Controller
+              name='password'
+              control={form.control}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Пароль</FieldLabel>
+                  <PasswordInput
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    className='h-auto py-3'
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
+              )}
+            />
+          </FieldGroup>
+          <Button
+            type='submit'
+            className='mt-6! h-auto w-full gap-2 py-3'
+            disabled={isPending}
+          >
+            {isPending ? <Spinner /> : null}
+            Войти
+          </Button>
+        </form>
       </CardContent>
       <CardFooter className='justify-center gap-1'>
         Еще нет аккаунта?
