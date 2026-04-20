@@ -32,7 +32,7 @@ export const CreateKeyButton = () => {
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'} onClose={handleCancel}>
       <DrawerTrigger asChild>
-        <Button variant='outline'>Создать ключ</Button>
+        <Button>Создать ключ</Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className='gap-1'>

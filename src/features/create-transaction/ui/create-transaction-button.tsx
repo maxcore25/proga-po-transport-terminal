@@ -40,7 +40,7 @@ export const CreateTransactionButton = () => {
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'} onClose={handleCancel}>
       <DrawerTrigger asChild>
-        <Button variant='outline'>Создать транзакцию</Button>
+        <Button>Создать транзакцию</Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className='gap-1'>

@@ -34,7 +34,7 @@ export const CreateCardButton = () => {
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'} onClose={handleCancel}>
       <DrawerTrigger asChild>
-        <Button variant='outline'>Создать карту</Button>
+        <Button>Создать карту</Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className='gap-1'>
@@ -56,7 +56,9 @@ export const CreateCardButton = () => {
                 name='cardNumber'
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>Номер карты (UID)</FieldLabel>
+                    <FieldLabel htmlFor={field.name}>
+                      Номер карты (UID)
+                    </FieldLabel>
                     <Input
                       autoFocus
                       {...field}

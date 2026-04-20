@@ -32,7 +32,7 @@ export const CreateTerminalButton = () => {
   return (
     <Drawer direction={isMobile ? 'bottom' : 'right'} onClose={handleCancel}>
       <DrawerTrigger asChild>
-        <Button variant='outline'>Создать терминал</Button>
+        <Button>Создать терминал</Button>
       </DrawerTrigger>
       <DrawerContent>
         <DrawerHeader className='gap-1'>
@@ -73,9 +73,7 @@ export const CreateTerminalButton = () => {
                 name='serialNumber'
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>
-                      Серийный номер
-                    </FieldLabel>
+                    <FieldLabel htmlFor={field.name}>Серийный номер</FieldLabel>
                     <Input
                       {...field}
                       id={field.name}
