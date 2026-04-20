@@ -10,25 +10,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/ui/card';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/shared/ui/form';
+import { Field, FieldError, FieldGroup, FieldLabel } from '@/shared/ui/field';
 import { Input } from '@/shared/ui/input';
 import { PasswordInput } from '@/shared/ui/password-input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/shared/ui/select';
 import { Spinner } from '@/shared/ui/spinner';
 import Link from 'next/link';
+import { Controller } from 'react-hook-form';
 import { useRegisterForm } from '../model/use-register-form';
 
 export function RegisterForm({
@@ -46,95 +33,92 @@ export function RegisterForm({
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className={'space-y-4'}>
-            <FormField
+        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+          <FieldGroup>
+            <Controller
               control={form.control}
               name='firstName'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Имя</FormLabel>
-                  <FormControl>
-                    <Input autoFocus {...field} className='h-auto py-3' />
-                  </FormControl>
-                  <FormMessage className='h-[20px]' />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Имя</FieldLabel>
+                  <Input
+                    autoFocus
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    className='h-auto py-3'
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
-            <FormField
+            <Controller
               control={form.control}
               name='lastName'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Фамилия</FormLabel>
-                  <FormControl>
-                    <Input {...field} className='h-auto py-3' />
-                  </FormControl>
-                  <FormMessage className='h-[20px]' />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Фамилия</FieldLabel>
+                  <Input
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    className='h-auto py-3'
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
-            <FormField
-              control={form.control}
-              name='knowledgeLevel'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Уровень знаний</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className='h-auto! w-full py-3'>
-                        <SelectValue placeholder='Выберите уровень' />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value='beginner'>Начальный</SelectItem>
-                      <SelectItem value='intermediate'>Средний</SelectItem>
-                      <SelectItem value='advanced'>Продвинутый</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage className='h-[20px]' />
-                </FormItem>
-              )}
-            />
-            <FormField
+            <Controller
               control={form.control}
               name='email'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Почта</FormLabel>
-                  <FormControl>
-                    <Input type='email' {...field} className='h-auto py-3' />
-                  </FormControl>
-                  <FormMessage className='h-[20px]' />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Почта</FieldLabel>
+                  <Input
+                    type='email'
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    className='h-auto py-3'
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
-            <FormField
+            <Controller
               control={form.control}
               name='password'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Пароль</FormLabel>
-                  <FormControl>
-                    <PasswordInput {...field} className='h-auto py-3' />
-                  </FormControl>
-                  <FormMessage className='h-[20px]' />
-                </FormItem>
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor={field.name}>Пароль</FieldLabel>
+                  <PasswordInput
+                    {...field}
+                    id={field.name}
+                    aria-invalid={fieldState.invalid}
+                    className='h-auto py-3'
+                  />
+                  {fieldState.invalid && (
+                    <FieldError errors={[fieldState.error]} />
+                  )}
+                </Field>
               )}
             />
-            <Button
-              type='submit'
-              className='mt-6! h-auto w-full gap-2 py-3'
-              disabled={isPending}
-            >
-              {isPending ? <Spinner /> : null}
-              Зарегистрироваться
-            </Button>
-          </form>
-        </Form>
+          </FieldGroup>
+          <Button
+            type='submit'
+            className='mt-6! h-auto w-full gap-2 py-3'
+            disabled={isPending}
+          >
+            {isPending ? <Spinner /> : null}
+            Зарегистрироваться
+          </Button>
+        </form>
       </CardContent>
       <CardFooter className='justify-center gap-1'>
         Уже есть аккаунт?
