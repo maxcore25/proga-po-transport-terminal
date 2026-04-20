@@ -8,6 +8,8 @@ export const QUERY_KEYS = {
   USER_ME: 'USER_ME',
   BRANCHES: 'BRANCHES',
   BRANCH: 'BRANCH',
+  CARDS: 'CARDS',
+  KEYS: 'KEYS',
 } as const;
 
 export const LOCAL_STORAGE_KEYS = {

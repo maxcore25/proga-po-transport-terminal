@@ -15,7 +15,7 @@ import * as React from 'react';
 
 const data = {
   team: {
-    name: 'Админ панель',
+    name: 'Админ-панель',
     logo: Bus,
   },
   navMain: [
