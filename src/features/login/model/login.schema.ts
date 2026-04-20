@@ -11,7 +11,7 @@ export const passwordSchema = z
   });
 
 export const loginFormSchema = z.object({
-  email: z.email().trim(),
+  username: z.string().trim(),
   password: passwordSchema,
 });
 

@@ -1,5 +1,5 @@
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:8888';
+  process.env.NEXT_PUBLIC_BASE_URL || 'https://localhost:8888';
 export const BASE_API_URL = `${BASE_URL}/api/v1`;
 
 export const QUERY_KEYS = {

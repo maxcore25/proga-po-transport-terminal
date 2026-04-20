@@ -29,20 +29,19 @@ export function LoginForm({
       <CardHeader>
         <CardTitle>Логин</CardTitle>
         <CardDescription>
-          Введите почту и пароль, чтобы войти в аккаунт.
+          Введите username и пароль, чтобы войти в аккаунт.
         </CardDescription>
       </CardHeader>
       <CardContent>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
           <FieldGroup>
             <Controller
-              name='email'
+              name='username'
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Почта</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Username</FieldLabel>
                   <Input
-                    type='email'
                     autoFocus
                     {...field}
                     id={field.name}
