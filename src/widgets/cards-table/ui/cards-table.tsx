@@ -363,7 +363,10 @@ export function CardsTable() {
           </div>
           <div className='flex w-full items-center gap-8 lg:w-fit'>
             <div className='hidden items-center gap-2 lg:flex'>
-              <Label htmlFor='rows-per-page-cards' className='text-sm font-medium'>
+              <Label
+                htmlFor='rows-per-page-cards'
+                className='text-sm font-medium'
+              >
                 Строк на странице
               </Label>
               <Select
