@@ -1,11 +1,11 @@
+import { passwordSchema } from '@/features/login/model/login.schema';
 import { z } from 'zod';
 
 export const createUserSchema = z.object({
-  firstName: z.string(),
-  lastName: z.string(),
-  middleName: z.string().optional(),
-  email: z.email(),
-  password: z.string(),
+  fullName: z.string().trim(),
+  username: z.string().trim(),
+  password: passwordSchema,
+  isAdmin: z.boolean(),
 });
 
 export type CreateUserValues = z.infer<typeof createUserSchema>;

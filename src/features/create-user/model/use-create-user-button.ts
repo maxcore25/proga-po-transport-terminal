@@ -10,17 +10,10 @@ export const useCreateUserButton = () => {
   const form = useForm<CreateUserValues>({
     resolver: zodResolver(createUserSchema),
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      middleName: '',
-      email: '',
+      fullName: '',
+      username: '',
       password: '',
-      phone: '',
-      role: undefined,
-      knowledgeLevel: undefined,
-      portfolio: '',
-      rating: undefined,
-      testimonialsCount: undefined,
+      isAdmin: false,
     },
   });
   const { error, isSuccess, isError, isPending, mutate } = useCreateUser();
