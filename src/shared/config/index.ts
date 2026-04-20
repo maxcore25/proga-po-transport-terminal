@@ -12,6 +12,8 @@ export const QUERY_KEYS = {
   CARDS: 'CARDS',
   KEY: 'KEY',
   KEYS: 'KEYS',
+  TERMINAL: 'TERMINAL',
+  TERMINALS: 'TERMINALS',
 } as const;
 
 export const LOCAL_STORAGE_KEYS = {
