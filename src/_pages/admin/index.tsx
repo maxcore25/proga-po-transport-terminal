@@ -3,6 +3,7 @@
 import { CardsTable } from '@/widgets/cards-table';
 import { KeysTable } from '@/widgets/keys-table';
 import { TerminalsTable } from '@/widgets/terminals-table';
+import { TransactionsTable } from '@/widgets/transactions-table';
 import { UsersTable } from '@/widgets/users-table';
 
 export const AdminHomePage = () => {
@@ -12,6 +13,7 @@ export const AdminHomePage = () => {
       <TerminalsTable />
       <KeysTable />
       <CardsTable />
+      <TransactionsTable />
     </div>
   );
 };
