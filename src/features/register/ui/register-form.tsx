@@ -37,10 +37,10 @@ export function RegisterForm({
           <FieldGroup>
             <Controller
               control={form.control}
-              name='firstName'
+              name='fullName'
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Имя</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Имя и фамилия</FieldLabel>
                   <Input
                     autoFocus
                     {...field}
@@ -56,30 +56,11 @@ export function RegisterForm({
             />
             <Controller
               control={form.control}
-              name='lastName'
+              name='username'
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Фамилия</FieldLabel>
+                  <FieldLabel htmlFor={field.name}>Username</FieldLabel>
                   <Input
-                    {...field}
-                    id={field.name}
-                    aria-invalid={fieldState.invalid}
-                    className='h-auto py-3'
-                  />
-                  {fieldState.invalid && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              control={form.control}
-              name='email'
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor={field.name}>Почта</FieldLabel>
-                  <Input
-                    type='email'
                     {...field}
                     id={field.name}
                     aria-invalid={fieldState.invalid}

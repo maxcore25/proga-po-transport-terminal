@@ -14,9 +14,8 @@ export const passwordSchema = z
 // });
 
 export const registerFormSchema = z.object({
-  firstName: z.string().trim(),
-  lastName: z.string().trim(),
-  email: z.email().trim(),
+  fullName: z.string().trim(),
+  username: z.string().trim(),
   password: passwordSchema,
 });
 
