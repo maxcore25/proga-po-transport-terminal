@@ -6,9 +6,11 @@ export const QUERY_KEYS = {
   USER: 'USER',
   USERS: 'USERS',
   USER_ME: 'USER_ME',
-  BRANCHES: 'BRANCHES',
   BRANCH: 'BRANCH',
+  BRANCHES: 'BRANCHES',
+  CARD: 'CARD',
   CARDS: 'CARDS',
+  KEY: 'KEY',
   KEYS: 'KEYS',
 } as const;
 

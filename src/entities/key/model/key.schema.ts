@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
+export const keyTypeSchema = z.enum(['A', 'B']);
+
 export const keySchema = z.object({
   id: z.uuid(),
   name: z.string().min(1),
-  keyType: z.string().min(1),
+  keyType: keyTypeSchema,
   keyValue: z.string().min(1),
   sector: z.number().int(),
   description: z.string().nullable().optional(),
