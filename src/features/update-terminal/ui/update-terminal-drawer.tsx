@@ -23,7 +23,6 @@ import {
 } from '@/shared/ui/select';
 import { Spinner } from '@/shared/ui/spinner';
 import { Controller } from 'react-hook-form';
-import { UpdateTerminalFormValues } from '../model/update-terminal.schema';
 import { useUpdateTerminalForm } from '../model/use-update-terminal-form';
 
 interface UpdateTerminalDrawerProps {
@@ -59,12 +58,7 @@ export const UpdateTerminalDrawer = ({
           </DrawerDescription>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
-          <form
-            onSubmit={form.handleSubmit((values: UpdateTerminalFormValues) =>
-              onSubmit(values)
-            )}
-            className='space-y-4'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FieldGroup>
               <Controller
                 control={form.control}
@@ -90,9 +84,7 @@ export const UpdateTerminalDrawer = ({
                 name='serialNumber'
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor={field.name}>
-                      Серийный номер
-                    </FieldLabel>
+                    <FieldLabel htmlFor={field.name}>Серийный номер</FieldLabel>
                     <Input
                       {...field}
                       id={field.name}

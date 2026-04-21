@@ -22,7 +22,6 @@ import {
 } from '@/shared/ui/select';
 import { Spinner } from '@/shared/ui/spinner';
 import { Controller } from 'react-hook-form';
-import { CreateTerminalValues } from '../model/create-terminal.schema';
 import { useCreateTerminalButton } from '../model/use-create-terminal-button';
 
 export const CreateTerminalButton = () => {
@@ -42,12 +41,7 @@ export const CreateTerminalButton = () => {
           </DrawerDescription>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
-          <form
-            onSubmit={form.handleSubmit((values: CreateTerminalValues) =>
-              onSubmit(values)
-            )}
-            className='space-y-4'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FieldGroup>
               <Controller
                 control={form.control}

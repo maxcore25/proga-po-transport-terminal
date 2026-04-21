@@ -23,7 +23,6 @@ import {
 } from '@/shared/ui/select';
 import { Spinner } from '@/shared/ui/spinner';
 import { Controller } from 'react-hook-form';
-import { UpdateKeyFormValues } from '../model/update-key.schema';
 import { useUpdateKeyForm } from '../model/use-update-key-form';
 
 interface UpdateKeyDrawerProps {
@@ -59,12 +58,7 @@ export const UpdateKeyDrawer = ({
           </DrawerDescription>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
-          <form
-            onSubmit={form.handleSubmit((values: UpdateKeyFormValues) =>
-              onSubmit(values)
-            )}
-            className='space-y-4'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FieldGroup>
               <Controller
                 control={form.control}

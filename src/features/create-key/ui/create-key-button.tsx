@@ -22,7 +22,6 @@ import {
 } from '@/shared/ui/select';
 import { Spinner } from '@/shared/ui/spinner';
 import { Controller } from 'react-hook-form';
-import { CreateKeyValues } from '../model/create-key.schema';
 import { useCreateKeyButton } from '../model/use-create-key-button';
 
 export const CreateKeyButton = () => {
@@ -42,12 +41,7 @@ export const CreateKeyButton = () => {
           </DrawerDescription>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
-          <form
-            onSubmit={form.handleSubmit((values: CreateKeyValues) =>
-              onSubmit(values)
-            )}
-            className='space-y-4'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FieldGroup>
               <Controller
                 control={form.control}

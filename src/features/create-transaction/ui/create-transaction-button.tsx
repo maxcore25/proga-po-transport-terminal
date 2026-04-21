@@ -24,7 +24,6 @@ import {
 } from '@/shared/ui/select';
 import { Spinner } from '@/shared/ui/spinner';
 import { Controller } from 'react-hook-form';
-import { CreateTransactionValues } from '../model/create-transaction.schema';
 import { useCreateTransactionButton } from '../model/use-create-transaction-button';
 
 export const CreateTransactionButton = () => {
@@ -50,12 +49,7 @@ export const CreateTransactionButton = () => {
           </DrawerDescription>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
-          <form
-            onSubmit={form.handleSubmit((values: CreateTransactionValues) =>
-              onSubmit(values)
-            )}
-            className='space-y-4'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FieldGroup>
               <Controller
                 control={form.control}

@@ -23,7 +23,6 @@ import {
 } from '@/shared/ui/select';
 import { Spinner } from '@/shared/ui/spinner';
 import { Controller } from 'react-hook-form';
-import { CreateCardValues } from '../model/create-card.schema';
 import { useCreateCardButton } from '../model/use-create-card-button';
 
 export const CreateCardButton = () => {
@@ -44,12 +43,7 @@ export const CreateCardButton = () => {
           </DrawerDescription>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
-          <form
-            onSubmit={form.handleSubmit((values: CreateCardValues) =>
-              onSubmit(values)
-            )}
-            className='space-y-4'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FieldGroup>
               <Controller
                 control={form.control}

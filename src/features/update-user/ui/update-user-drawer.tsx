@@ -44,14 +44,6 @@ export const UpdateUserDrawer = ({
   );
   const isMobile = useIsMobile();
 
-  const handleFormSubmit = (values: UpdateUserValues) => {
-    onSubmit(values);
-  };
-
-  const handleCancelClick = () => {
-    handleCancel();
-  };
-
   return (
     <Drawer
       open={open}
@@ -66,10 +58,7 @@ export const UpdateUserDrawer = ({
           </DrawerDescription>
         </DrawerHeader>
         <div className='flex flex-col gap-4 overflow-y-auto px-4 text-sm'>
-          <form
-            onSubmit={form.handleSubmit(handleFormSubmit)}
-            className='space-y-4'
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
             <FieldGroup>
               <Controller
                 control={form.control as never}
@@ -149,7 +138,7 @@ export const UpdateUserDrawer = ({
         </div>
         <DrawerFooter>
           <DrawerClose asChild>
-            <Button variant='outline' onClick={handleCancelClick}>
+            <Button variant='outline' onClick={handleCancel}>
               Отмена
             </Button>
           </DrawerClose>
