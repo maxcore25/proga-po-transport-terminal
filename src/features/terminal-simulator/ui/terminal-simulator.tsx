@@ -135,20 +135,22 @@ function TerminalSimulatorContent() {
             <>
               <div className='flex items-center justify-between gap-3'>
                 <span className='text-muted-foreground text-sm'>
-                  Serial Number
+                  Серийный номер
                 </span>
                 <span className='text-sm font-medium'>
                   {selectedTerminal.serialNumber}
                 </span>
               </div>
               <div className='flex items-center justify-between gap-3'>
-                <span className='text-muted-foreground text-sm'>Name</span>
+                <span className='text-muted-foreground text-sm'>Название</span>
                 <span className='text-sm font-medium'>
                   {selectedTerminal.name}
                 </span>
               </div>
               <div className='flex items-center justify-between gap-3'>
-                <span className='text-muted-foreground text-sm'>Location</span>
+                <span className='text-muted-foreground text-sm'>
+                  Расположение
+                </span>
                 <span className='text-sm font-medium'>
                   {selectedTerminal.location}
                 </span>
