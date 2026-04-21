@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/shared/ui/button';
 import {
   Card,
@@ -9,12 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@/shared/ui/card';
-import { Input } from '@/shared/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/shared/ui/select';
 import { createMockCard, useAuthorization } from '../model/use-authorization';
-import { TerminalProvider, useTerminal } from '../model/use-terminal';
+import { useCardSelection } from '../model/use-card-selection';
+import { useTerminal } from '../model/use-terminal';
 
 const DEFAULT_FARE_AMOUNT = 3500;
-const FALLBACK_UID = 'A1B2C3D4';
 
 function StatusBadge({
   isSuccess,
@@ -39,7 +44,15 @@ function StatusBadge({
 function TerminalSimulatorContent() {
   const { terminalSerial, status, errorMessage, hasKeys, keys, initialize } =
     useTerminal();
-  const [manualUid, setManualUid] = useState('');
+  const {
+    cards,
+    selectedCard,
+    selectedCardNumber,
+    setSelectedCardNumber,
+    isPending: isCardsPending,
+    isError: isCardsError,
+    error: cardsError,
+  } = useCardSelection();
 
   const { authorize, isPending, result } = useAuthorization({
     amount: DEFAULT_FARE_AMOUNT,
@@ -49,8 +62,10 @@ function TerminalSimulatorContent() {
   });
 
   const handleTapCard = async () => {
-    const uid = manualUid.trim() || FALLBACK_UID;
-    await authorize(createMockCard(uid));
+    if (!selectedCard) {
+      return;
+    }
+    await authorize(createMockCard(selectedCard.cardNumber));
   };
 
   return (
@@ -64,7 +79,9 @@ function TerminalSimulatorContent() {
         </CardHeader>
         <CardContent className='space-y-3'>
           <div className='flex items-center justify-between gap-3'>
-            <span className='text-sm text-muted-foreground'>Статус терминала</span>
+            <span className='text-muted-foreground text-sm'>
+              Статус терминала
+            </span>
             <StatusBadge
               isSuccess={status === 'initialized'}
               text={status === 'initialized' ? 'Инициализирован' : 'Не готов'}
@@ -72,7 +89,9 @@ function TerminalSimulatorContent() {
           </div>
 
           <div className='flex items-center justify-between gap-3'>
-            <span className='text-sm text-muted-foreground'>Ключей загружено</span>
+            <span className='text-muted-foreground text-sm'>
+              Ключей загружено
+            </span>
             <span className='text-sm font-medium'>{keys.length}</span>
           </div>
 
@@ -88,7 +107,9 @@ function TerminalSimulatorContent() {
             onClick={() => void initialize()}
             disabled={status === 'loading'}
           >
-            {status === 'loading' ? 'Загрузка ключей...' : 'Переинициализировать'}
+            {status === 'loading'
+              ? 'Загрузка ключей...'
+              : 'Переинициализировать'}
           </Button>
         </CardContent>
       </Card>
@@ -97,23 +118,58 @@ function TerminalSimulatorContent() {
         <CardHeader>
           <CardTitle>Имитация прикладывания карты</CardTitle>
           <CardDescription>
-            Укажите UID вручную или используйте тестовый UID по умолчанию.
+            Выберите существующую карту, чтобы приложить к терминалу.
           </CardDescription>
         </CardHeader>
         <CardContent className='space-y-3'>
           <div className='space-y-1.5'>
-            <label htmlFor='manual-uid' className='text-sm font-medium'>
-              UID карты
+            <label htmlFor='card-number-select' className='text-sm font-medium'>
+              Карта
             </label>
-            <Input
-              id='manual-uid'
-              value={manualUid}
-              onChange={event => setManualUid(event.target.value)}
-              placeholder={FALLBACK_UID}
-            />
+            <Select
+              value={selectedCardNumber}
+              onValueChange={setSelectedCardNumber}
+              disabled={isCardsPending || cards.length === 0}
+            >
+              <SelectTrigger id='card-number-select' className='w-full'>
+                <SelectValue
+                  placeholder={
+                    isCardsPending
+                      ? 'Загрузка карт...'
+                      : 'Выберите карту для оплаты'
+                  }
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {cards.map(card => (
+                  <SelectItem key={card.id} value={card.cardNumber}>
+                    {`${card.cardNumber} - ${card.ownerName}`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <Button type='button' onClick={() => void handleTapCard()} disabled={isPending}>
+          {isCardsError && (
+            <p className='text-sm text-red-600 dark:text-red-400'>
+              Ошибка загрузки карт:{' '}
+              {cardsError instanceof Error
+                ? cardsError.message
+                : 'неизвестная ошибка'}
+            </p>
+          )}
+
+          {!isCardsPending && cards.length === 0 && (
+            <p className='text-sm text-amber-600 dark:text-amber-400'>
+              Нет доступных карт. Создайте карту в системе перед авторизацией.
+            </p>
+          )}
+
+          <Button
+            type='button'
+            onClick={() => void handleTapCard()}
+            disabled={isPending || !selectedCard || isCardsPending}
+          >
             {isPending ? 'Авторизация...' : 'Приложить карту'}
           </Button>
         </CardContent>
@@ -122,12 +178,16 @@ function TerminalSimulatorContent() {
       {result && (
         <Card>
           <CardHeader>
-            <CardTitle>Результат авторизации</CardTitle>
+            <CardTitle>Результат авторизации платежа</CardTitle>
           </CardHeader>
           <CardContent className='space-y-2'>
             <StatusBadge
               isSuccess={result.variant === 'success'}
-              text={result.variant === 'success' ? 'Оплата одобрена' : 'Оплата отклонена'}
+              text={
+                result.variant === 'success'
+                  ? 'Оплата одобрена'
+                  : 'Оплата отклонена'
+              }
             />
             <p
               className={
@@ -139,7 +199,9 @@ function TerminalSimulatorContent() {
               {result.message}
             </p>
             {result.code && (
-              <p className='text-xs text-muted-foreground'>Код ответа: {result.code}</p>
+              <p className='text-muted-foreground text-xs'>
+                Код ответа: {result.code}
+              </p>
             )}
           </CardContent>
         </Card>
@@ -149,9 +211,5 @@ function TerminalSimulatorContent() {
 }
 
 export function TerminalSimulator() {
-  return (
-    <TerminalProvider>
-      <TerminalSimulatorContent />
-    </TerminalProvider>
-  );
+  return <TerminalSimulatorContent />;
 }
