@@ -21,3 +21,10 @@ export const formatDate = (date: string) => {
     day: 'numeric',
   }).format(new Date(date));
 };
+
+export function formatBalanceRub(kopecks: number) {
+  return new Intl.NumberFormat('ru-RU', {
+    style: 'currency',
+    currency: 'RUB',
+  }).format(kopecks / 100);
+}

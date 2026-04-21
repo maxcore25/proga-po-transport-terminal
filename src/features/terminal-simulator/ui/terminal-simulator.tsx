@@ -18,6 +18,7 @@ import {
 import { createMockCard, useAuthorization } from '../model/use-authorization';
 import { useCardSelection } from '../model/use-card-selection';
 import { useTerminal } from '../model/use-terminal';
+import { formatBalanceRub } from '@/shared/lib/utils';
 
 const DEFAULT_FARE_AMOUNT = 3500;
 
@@ -201,6 +202,23 @@ function TerminalSimulatorContent() {
             {result.code && (
               <p className='text-muted-foreground text-xs'>
                 Код ответа: {result.code}
+              </p>
+            )}
+            {typeof result.response?.balanceAfter === 'number' && (
+              <p className='text-muted-foreground text-xs'>
+                Баланс после списания:{' '}
+                {formatBalanceRub(result.response.balanceAfter)}
+              </p>
+            )}
+            {result.response?.processedAt && (
+              <p className='text-muted-foreground text-xs'>
+                Время обработки:{' '}
+                {new Date(result.response.processedAt).toLocaleString()}
+              </p>
+            )}
+            {result.response?.transactionId && (
+              <p className='text-muted-foreground text-xs'>
+                ID транзакции: {result.response.transactionId}
               </p>
             )}
           </CardContent>

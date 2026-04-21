@@ -6,6 +6,7 @@ import { CreateCardButton } from '@/features/create-card';
 import { DeleteCardDropdownItem } from '@/features/delete-card';
 import { UpdateCardDrawer } from '@/features/update-card';
 import { useIsMobile } from '@/shared/lib/hooks';
+import { formatBalanceRub } from '@/shared/lib/utils';
 import { Button } from '@/shared/ui/button';
 import { Checkbox } from '@/shared/ui/checkbox';
 import {
@@ -67,13 +68,6 @@ import {
   VisibilityState,
 } from '@tanstack/react-table';
 import * as React from 'react';
-
-function formatBalanceRub(kopecks: number) {
-  return new Intl.NumberFormat('ru-RU', {
-    style: 'currency',
-    currency: 'RUB',
-  }).format(kopecks / 100);
-}
 
 function ActionsCell({ row }: { row: Row<Card> }) {
   const [isOpen, setIsOpen] = React.useState(false);
