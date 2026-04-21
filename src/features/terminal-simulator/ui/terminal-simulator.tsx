@@ -86,7 +86,7 @@ function TerminalSimulatorContent() {
         <CardHeader>
           <CardTitle>Симулятор терминала</CardTitle>
           <CardDescription>
-            Выберите терминал из бэкенда, чтобы загрузить его ключи.
+            Выберите терминал, чтобы загрузить его ключи.
           </CardDescription>
         </CardHeader>
         <CardContent className='space-y-3'>
@@ -143,7 +143,9 @@ function TerminalSimulatorContent() {
               </div>
               <div className='flex items-center justify-between gap-3'>
                 <span className='text-muted-foreground text-sm'>Name</span>
-                <span className='text-sm font-medium'>{selectedTerminal.name}</span>
+                <span className='text-sm font-medium'>
+                  {selectedTerminal.name}
+                </span>
               </div>
               <div className='flex items-center justify-between gap-3'>
                 <span className='text-muted-foreground text-sm'>Location</span>
@@ -180,8 +182,13 @@ function TerminalSimulatorContent() {
           <Button
             type='button'
             variant='outline'
-            onClick={() => void initialize(selectedTerminalSerial || terminalSerial)}
-            disabled={status === 'loading' || (!selectedTerminal && terminals.length > 0)}
+            onClick={() =>
+              void initialize(selectedTerminalSerial || terminalSerial)
+            }
+            disabled={
+              status === 'loading' ||
+              (!selectedTerminal && terminals.length > 0)
+            }
           >
             {status === 'loading'
               ? 'Загрузка ключей...'
