@@ -39,6 +39,8 @@ export function NavUser() {
 
   if (!user) return <div>Нет данных пользователя</div>;
 
+  const firstLetter = user.fullName.charAt(0).toUpperCase();
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -51,13 +53,15 @@ export function NavUser() {
               <Avatar className='h-8 w-8 rounded-lg'>
                 <AvatarImage
                   src={'https://avatars.githubusercontent.com/u/124599?v=4'}
-                  alt={user.firstName}
+                  alt={user.fullName}
                 />
-                <AvatarFallback className='rounded-lg'>ИК</AvatarFallback>
+                <AvatarFallback className='rounded-lg'>
+                  {firstLetter}
+                </AvatarFallback>
               </Avatar>
               <div className='grid flex-1 text-left text-sm leading-tight'>
-                <span className='truncate font-medium'>{user.firstName}</span>
-                <span className='truncate text-xs'>{user.email}</span>
+                <span className='truncate font-medium'>{user.fullName}</span>
+                <span className='truncate text-xs'>{user.username}</span>
               </div>
               <ChevronsUpDown className='ml-auto size-4' />
             </SidebarMenuButton>
@@ -73,13 +77,15 @@ export function NavUser() {
                 <Avatar className='h-8 w-8 rounded-lg'>
                   <AvatarImage
                     src={'https://avatars.githubusercontent.com/u/124599?v=4'}
-                    alt={user.firstName}
+                    alt={user.fullName}
                   />
-                  <AvatarFallback className='rounded-lg'>ИК</AvatarFallback>
+                  <AvatarFallback className='rounded-lg'>
+                    {firstLetter}
+                  </AvatarFallback>
                 </Avatar>
                 <div className='grid flex-1 text-left text-sm leading-tight'>
-                  <span className='truncate font-medium'>{user.firstName}</span>
-                  <span className='truncate text-xs'>{user.email}</span>
+                  <span className='truncate font-medium'>{user.fullName}</span>
+                  <span className='truncate text-xs'>{user.username}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
