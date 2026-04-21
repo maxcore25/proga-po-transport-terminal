@@ -18,6 +18,7 @@ import {
 import { createMockCard, useAuthorization } from '../model/use-authorization';
 import { useCardSelection } from '../model/use-card-selection';
 import { useTerminal } from '../model/use-terminal';
+import { useTerminalSelection } from '../model/use-terminal-selection';
 import { formatBalanceRub } from '@/shared/lib/utils';
 import { Label } from '@/shared/ui/label';
 
@@ -46,6 +47,15 @@ function StatusBadge({
 function TerminalSimulatorContent() {
   const { terminalSerial, status, errorMessage, hasKeys, keys, initialize } =
     useTerminal();
+  const {
+    terminals,
+    selectedTerminal,
+    selectedTerminalSerial,
+    setSelectedTerminalSerial,
+    isPending: isTerminalsPending,
+    isError: isTerminalsError,
+    error: terminalsError,
+  } = useTerminalSelection();
   const {
     cards,
     selectedCard,
@@ -76,10 +86,74 @@ function TerminalSimulatorContent() {
         <CardHeader>
           <CardTitle>Симулятор терминала</CardTitle>
           <CardDescription>
-            Серийный номер терминала: <strong>{terminalSerial}</strong>
+            Выберите терминал из бэкенда, чтобы загрузить его ключи.
           </CardDescription>
         </CardHeader>
         <CardContent className='space-y-3'>
+          <div className='space-y-1.5'>
+            <Label htmlFor='terminal-select'>Терминал</Label>
+            <Select
+              value={selectedTerminalSerial}
+              onValueChange={value => void setSelectedTerminalSerial(value)}
+              disabled={isTerminalsPending || terminals.length === 0}
+            >
+              <SelectTrigger id='terminal-select' className='w-full'>
+                <SelectValue
+                  placeholder={
+                    isTerminalsPending
+                      ? 'Загрузка терминалов...'
+                      : 'Выберите терминал'
+                  }
+                />
+              </SelectTrigger>
+              <SelectContent>
+                {terminals.map(terminal => (
+                  <SelectItem key={terminal.id} value={terminal.serialNumber}>
+                    {`${terminal.serialNumber} - ${terminal.name}`}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {isTerminalsError && (
+            <p className='text-sm text-red-600 dark:text-red-400'>
+              Ошибка загрузки терминалов:{' '}
+              {terminalsError instanceof Error
+                ? terminalsError.message
+                : 'неизвестная ошибка'}
+            </p>
+          )}
+
+          {!isTerminalsPending && terminals.length === 0 && (
+            <p className='text-sm text-amber-600 dark:text-amber-400'>
+              Нет доступных терминалов. Создайте терминал в системе.
+            </p>
+          )}
+
+          {selectedTerminal && (
+            <>
+              <div className='flex items-center justify-between gap-3'>
+                <span className='text-muted-foreground text-sm'>
+                  Serial Number
+                </span>
+                <span className='text-sm font-medium'>
+                  {selectedTerminal.serialNumber}
+                </span>
+              </div>
+              <div className='flex items-center justify-between gap-3'>
+                <span className='text-muted-foreground text-sm'>Name</span>
+                <span className='text-sm font-medium'>{selectedTerminal.name}</span>
+              </div>
+              <div className='flex items-center justify-between gap-3'>
+                <span className='text-muted-foreground text-sm'>Location</span>
+                <span className='text-sm font-medium'>
+                  {selectedTerminal.location}
+                </span>
+              </div>
+            </>
+          )}
+
           <div className='flex items-center justify-between gap-3'>
             <span className='text-muted-foreground text-sm'>
               Статус терминала
@@ -106,8 +180,8 @@ function TerminalSimulatorContent() {
           <Button
             type='button'
             variant='outline'
-            onClick={() => void initialize()}
-            disabled={status === 'loading'}
+            onClick={() => void initialize(selectedTerminalSerial || terminalSerial)}
+            disabled={status === 'loading' || (!selectedTerminal && terminals.length > 0)}
           >
             {status === 'loading'
               ? 'Загрузка ключей...'

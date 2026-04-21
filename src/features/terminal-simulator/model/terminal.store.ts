@@ -17,7 +17,7 @@ type TerminalState = {
 };
 
 type TerminalActions = {
-  initialize: () => Promise<void>;
+  initialize: (terminalSerial?: string) => Promise<void>;
   reset: () => void;
 };
 
@@ -34,14 +34,17 @@ const initialTerminalState: TerminalState = {
 export const useTerminalStore = create<TerminalStore>(set => ({
   ...initialTerminalState,
 
-  initialize: async () => {
+  initialize: async terminalSerial => {
+    const serialForRequest = terminalSerial ?? TERMINAL_SERIAL;
+
     set({
+      terminalSerial: serialForRequest,
       status: 'loading',
       errorMessage: null,
     });
 
     try {
-      const response = await loadTerminalKeys(TERMINAL_SERIAL);
+      const response = await loadTerminalKeys(serialForRequest);
       set({
         keys: response.keys,
         issuedAt: response.issuedAt,
