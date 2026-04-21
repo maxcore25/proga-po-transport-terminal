@@ -19,6 +19,7 @@ import { createMockCard, useAuthorization } from '../model/use-authorization';
 import { useCardSelection } from '../model/use-card-selection';
 import { useTerminal } from '../model/use-terminal';
 import { formatBalanceRub } from '@/shared/lib/utils';
+import { Label } from '@/shared/ui/label';
 
 const DEFAULT_FARE_AMOUNT = 3500;
 
@@ -124,9 +125,7 @@ function TerminalSimulatorContent() {
         </CardHeader>
         <CardContent className='space-y-3'>
           <div className='space-y-1.5'>
-            <label htmlFor='card-number-select' className='text-sm font-medium'>
-              Карта
-            </label>
+            <Label htmlFor='card-number-select'>Карта</Label>
             <Select
               value={selectedCardNumber}
               onValueChange={setSelectedCardNumber}
