@@ -28,10 +28,8 @@ export const useLoginForm = () => {
 
         form.reset();
 
-        if (role === 'admin') {
+        if (role === 'admin' || role === 'user') {
           router.push('/admin');
-        } else {
-          router.push('/home');
         }
       },
       onError: (error: Error) => {

@@ -23,7 +23,7 @@ export const useRegisterForm = () => {
       onSuccess: data => {
         localStorage.setItem(LOCAL_STORAGE_KEYS.ACCESS_TOKEN, data.accessToken);
         form.reset();
-        router.push('/home');
+        router.push('/admin');
       },
       onError: error => {
         toast.error(error.message || 'Something went wrong', {
