@@ -1,4 +1,5 @@
 import { BASE_API_URL } from '@/shared/config';
+import axios from 'axios';
 import {
   keysLoadResponseSchema,
   paymentAuthResponseSchema,
@@ -22,57 +23,48 @@ function buildApiErrorMessage(
   return payload?.error || payload?.message || fallback;
 }
 
-async function parseJsonSafely<T>(response: Response): Promise<T | null> {
-  try {
-    return (await response.json()) as T;
-  } catch {
-    return null;
-  }
-}
-
 export async function loadTerminalKeys(terminalSerial: string) {
-  const url = `${BASE_API_URL}/terminal/keys?terminal_serial=${encodeURIComponent(
-    terminalSerial
-  )}`;
-  const response = await fetch(url, { method: 'GET' });
+  try {
+    const { data } = await axios.get(`${BASE_API_URL}/terminal/keys`, {
+      params: {
+        terminal_serial: terminalSerial,
+      },
+    });
+    const parsedData = keysLoadResponseSchema.safeParse(data);
 
-  if (!response.ok) {
-    const errorPayload = await parseJsonSafely<ApiErrorPayload>(response);
-    throw new Error(
-      buildApiErrorMessage(errorPayload, 'Не удалось загрузить ключи терминала')
-    );
+    if (!parsedData.success) {
+      throw new Error('Сервер вернул некорректный пакет ключей');
+    }
+
+    return parsedData.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorPayload = error.response?.data as ApiErrorPayload | undefined;
+      throw new Error(
+        buildApiErrorMessage(errorPayload ?? null, 'Не удалось загрузить ключи терминала')
+      );
+    }
+
+    throw error;
   }
-
-  const data = await parseJsonSafely<unknown>(response);
-  const parsedData = keysLoadResponseSchema.safeParse(data);
-
-  if (!parsedData.success) {
-    throw new Error('Сервер вернул некорректный пакет ключей');
-  }
-
-  return parsedData.data;
 }
 
 export async function authorizePayment(payload: AuthorizePaymentPayload) {
-  const response = await fetch(`${BASE_API_URL}/terminal/authorize`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload),
-  });
+  try {
+    const { data } = await axios.post(`${BASE_API_URL}/terminal/authorize`, payload);
+    const parsedData = paymentAuthResponseSchema.safeParse(data);
 
-  if (!response.ok) {
-    const errorPayload = await parseJsonSafely<ApiErrorPayload>(response);
-    throw new Error(
-      buildApiErrorMessage(errorPayload, 'Ошибка сети при авторизации')
-    );
+    if (!parsedData.success) {
+      throw new Error('Сервер вернул некорректный ответ авторизации');
+    }
+
+    return parsedData.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const errorPayload = error.response?.data as ApiErrorPayload | undefined;
+      throw new Error(buildApiErrorMessage(errorPayload ?? null, 'Ошибка сети при авторизации'));
+    }
+
+    throw error;
   }
-
-  const data = await parseJsonSafely<unknown>(response);
-  const parsedData = paymentAuthResponseSchema.safeParse(data);
-
-  if (!parsedData.success) {
-    throw new Error('Сервер вернул некорректный ответ авторизации');
-  }
-
-  return parsedData.data;
 }

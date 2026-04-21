@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { authorizePayment } from '../api/terminal.api';
 import { KeyLoad, PaymentAuthResponse } from './terminal.schemas';
 
@@ -53,46 +53,37 @@ export function useAuthorization({
   hasKeys,
   keys,
 }: UseAuthorizationParams) {
-  const [result, setResult] = useState<AuthorizationUiResult | null>(null);
-  const [isPending, setIsPending] = useState(false);
-
-  const authorize = async (card: SimulatedCard) => {
-    if (!hasKeys) {
-      setResult({
-        variant: 'error',
-        message: 'Terminal not initialized',
-        code: 'terminal_not_initialized',
-      });
-      return;
-    }
-
-    setIsPending(true);
-    setResult(null);
-
-    try {
+  const mutation = useMutation<PaymentAuthResponse, Error, SimulatedCard>({
+    mutationFn: async card => {
+      if (!hasKeys) {
+        throw new Error('Terminal not initialized');
+      }
       const cardUid = decryptCardPayload(card, keys);
-      const response = await authorizePayment({
+      return authorizePayment({
         amount,
         cardNumber: cardUid,
         terminalSerial,
       });
+    },
+  });
 
-      setResult({
-        variant: response.approved ? 'success' : 'error',
-        message: response.message,
-        code: response.code,
-        response,
-      });
-    } catch (error) {
-      setResult({
-        variant: 'error',
-        message:
-          error instanceof Error ? error.message : 'Ошибка при авторизации карты',
-      });
-    } finally {
-      setIsPending(false);
-    }
+  const result: AuthorizationUiResult | null = mutation.data
+    ? {
+        variant: mutation.data.approved ? 'success' : 'error',
+        message: mutation.data.message,
+        code: mutation.data.code,
+        response: mutation.data,
+      }
+    : mutation.error
+      ? {
+          variant: 'error',
+          message: mutation.error.message || 'Ошибка при авторизации карты',
+        }
+      : null;
+
+  const authorize = async (card: SimulatedCard) => {
+    await mutation.mutateAsync(card);
   };
 
-  return { authorize, isPending, result, setResult };
+  return { authorize, isPending: mutation.isPending, result };
 }

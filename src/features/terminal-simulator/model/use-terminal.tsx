@@ -1,6 +1,8 @@
 'use client';
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
+import { QUERY_KEYS } from '@/shared/config';
+import { useQuery } from '@tanstack/react-query';
+import { createContext, useContext } from 'react';
 import { loadTerminalKeys } from '../api/terminal.api';
 import { KeyLoad } from './terminal.schemas';
 
@@ -21,49 +23,39 @@ type TerminalContextValue = {
 const TerminalContext = createContext<TerminalContextValue | null>(null);
 
 export function TerminalProvider({ children }: { children: React.ReactNode }) {
-  const [keys, setKeys] = useState<KeyLoad[]>([]);
-  const [issuedAt, setIssuedAt] = useState<string | null>(null);
-  const [status, setStatus] = useState<TerminalStatus>('idle');
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const query = useQuery({
+    queryKey: [QUERY_KEYS.TERMINAL, TERMINAL_SERIAL, QUERY_KEYS.KEYS],
+    queryFn: () => loadTerminalKeys(TERMINAL_SERIAL),
+  });
 
+  const keys = query.data?.keys ?? [];
+  const issuedAt = query.data?.issuedAt ?? null;
+
+  let status: TerminalStatus = 'idle';
+  if (query.isPending) status = 'loading';
+  if (query.isSuccess) status = 'initialized';
+  if (query.isError) status = 'error';
+
+  const errorMessage =
+    query.error instanceof Error ? query.error.message : null;
   const initialize = async () => {
-    setStatus('loading');
-    setErrorMessage(null);
-
-    try {
-      const response = await loadTerminalKeys(TERMINAL_SERIAL);
-      setKeys(response.keys);
-      setIssuedAt(response.issuedAt);
-      setStatus('initialized');
-    } catch (error) {
-      setKeys([]);
-      setIssuedAt(null);
-      setStatus('error');
-      setErrorMessage(
-        error instanceof Error ? error.message : 'Неизвестная ошибка инициализации'
-      );
-    }
+    await query.refetch();
   };
 
-  useEffect(() => {
-    void initialize();
-  }, []);
-
-  const value = useMemo<TerminalContextValue>(
-    () => ({
-      terminalSerial: TERMINAL_SERIAL,
-      keys,
-      issuedAt,
-      status,
-      errorMessage,
-      initialize,
-      hasKeys: keys.length > 0,
-    }),
-    [errorMessage, issuedAt, keys, status]
-  );
+  const value: TerminalContextValue = {
+    terminalSerial: TERMINAL_SERIAL,
+    keys,
+    issuedAt,
+    status,
+    errorMessage,
+    initialize,
+    hasKeys: keys.length > 0,
+  };
 
   return (
-    <TerminalContext.Provider value={value}>{children}</TerminalContext.Provider>
+    <TerminalContext.Provider value={value}>
+      {children}
+    </TerminalContext.Provider>
   );
 }
 
@@ -71,7 +63,9 @@ export function useTerminal() {
   const context = useContext(TerminalContext);
 
   if (!context) {
-    throw new Error('useTerminal должен использоваться внутри TerminalProvider');
+    throw new Error(
+      'useTerminal должен использоваться внутри TerminalProvider'
+    );
   }
 
   return context;
