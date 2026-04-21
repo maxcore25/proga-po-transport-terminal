@@ -73,7 +73,7 @@ function TerminalSimulatorContent() {
     <main className='mx-auto flex w-full max-w-2xl flex-col gap-4 p-4 md:p-6'>
       <Card>
         <CardHeader>
-          <CardTitle>Симулятор терминала оплаты</CardTitle>
+          <CardTitle>Симулятор терминала</CardTitle>
           <CardDescription>
             Серийный номер терминала: <strong>{terminalSerial}</strong>
           </CardDescription>
