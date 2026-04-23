@@ -1,27 +1,22 @@
 'use client';
 
 import { useGetCards } from '@/entities/card';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 export function useCardSelection() {
   const { data: cards = [], isPending, isError, error } = useGetCards();
   const [selectedCardNumber, setSelectedCardNumber] = useState('');
-
-  useEffect(() => {
-    if (!selectedCardNumber && cards.length > 0) {
-      setSelectedCardNumber(cards[0].cardNumber);
-    }
-  }, [cards, selectedCardNumber]);
+  const effectiveSelectedCardNumber = selectedCardNumber || cards[0]?.cardNumber || '';
 
   const selectedCard = useMemo(
-    () => cards.find(card => card.cardNumber === selectedCardNumber) ?? null,
-    [cards, selectedCardNumber]
+    () => cards.find(card => card.cardNumber === effectiveSelectedCardNumber) ?? null,
+    [cards, effectiveSelectedCardNumber]
   );
 
   return {
     cards,
     selectedCard,
-    selectedCardNumber,
+    selectedCardNumber: effectiveSelectedCardNumber,
     setSelectedCardNumber,
     isPending,
     isError,

@@ -1,38 +1,43 @@
 'use client';
 
 import { useGetTerminals } from '@/entities/terminal';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTerminalStore } from './terminal.store';
 
 export function useTerminalSelection() {
   const { data: terminals = [], isPending, isError, error } = useGetTerminals();
   const [selectedTerminalSerial, setSelectedTerminalSerial] = useState('');
   const initialize = useTerminalStore(state => state.initialize);
+  const lastInitializedSerialRef = useRef<string | null>(null);
+  const effectiveSelectedTerminalSerial =
+    selectedTerminalSerial || terminals[0]?.serialNumber || '';
 
   useEffect(() => {
-    if (!selectedTerminalSerial && terminals.length > 0) {
-      const initialSerial = terminals[0].serialNumber;
-      setSelectedTerminalSerial(initialSerial);
-      void initialize(initialSerial);
+    if (
+      effectiveSelectedTerminalSerial &&
+      lastInitializedSerialRef.current !== effectiveSelectedTerminalSerial
+    ) {
+      lastInitializedSerialRef.current = effectiveSelectedTerminalSerial;
+      void initialize(effectiveSelectedTerminalSerial);
     }
-  }, [initialize, selectedTerminalSerial, terminals]);
+  }, [effectiveSelectedTerminalSerial, initialize]);
 
   const selectedTerminal = useMemo(
     () =>
-      terminals.find(terminal => terminal.serialNumber === selectedTerminalSerial) ??
-      null,
-    [selectedTerminalSerial, terminals]
+      terminals.find(
+        terminal => terminal.serialNumber === effectiveSelectedTerminalSerial
+      ) ?? null,
+    [effectiveSelectedTerminalSerial, terminals]
   );
 
-  const handleTerminalChange = async (terminalSerial: string) => {
+  const handleTerminalChange = (terminalSerial: string) => {
     setSelectedTerminalSerial(terminalSerial);
-    await initialize(terminalSerial);
   };
 
   return {
     terminals,
     selectedTerminal,
-    selectedTerminalSerial,
+    selectedTerminalSerial: effectiveSelectedTerminalSerial,
     setSelectedTerminalSerial: handleTerminalChange,
     isPending,
     isError,
