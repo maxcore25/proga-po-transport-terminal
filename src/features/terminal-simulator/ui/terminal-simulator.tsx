@@ -244,7 +244,7 @@ function TerminalSimulatorContent() {
 
           {!isCardsPending && cards.length === 0 && (
             <p className='text-sm text-amber-600 dark:text-amber-400'>
-              Нет доступных карт. Создайте карту в системе перед авторизацией.
+              Нет доступных карт. Создайте карту в системе.
             </p>
           )}
 
