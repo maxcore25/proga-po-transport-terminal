@@ -1,0 +1,10 @@
+services:
+  nextjs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: proga-po-transport-terminal:latest
+    container_name: nextjs
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
