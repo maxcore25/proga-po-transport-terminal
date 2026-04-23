@@ -12,32 +12,20 @@ export const useUpdateUserForm = (
   const form = useForm<UpdateUserValues>({
     resolver: zodResolver(updateUserSchema),
     defaultValues: {
-      firstName: initialData?.firstName || '',
-      lastName: initialData?.lastName || '',
-      middleName: initialData?.middleName || '',
-      email: initialData?.email || '',
-      phone: initialData?.phone || '',
-      knowledgeLevel: initialData?.knowledgeLevel,
-      portfolio: initialData?.portfolio || '',
-      rating: initialData?.rating || 0,
-      role: initialData?.role,
-      testimonialsCount: initialData?.testimonialsCount || 0,
+      fullName: initialData?.fullName || '',
+      username: initialData?.username || '',
+      isAdmin: initialData?.isAdmin || false,
+      isActive: initialData?.isActive || false,
     },
   });
 
   useEffect(() => {
     if (initialData) {
       form.reset({
-        firstName: initialData.firstName || '',
-        lastName: initialData.lastName || '',
-        middleName: initialData.middleName || '',
-        email: initialData.email || '',
-        phone: initialData.phone || '',
-        knowledgeLevel: initialData.knowledgeLevel,
-        portfolio: initialData.portfolio || '',
-        rating: initialData.rating || 0,
-        role: initialData.role,
-        testimonialsCount: initialData.testimonialsCount || 0,
+        fullName: initialData.fullName || '',
+        username: initialData.username || '',
+        isAdmin: initialData.isAdmin || false,
+        isActive: initialData.isActive || false,
       });
     }
   }, [initialData, form]);
