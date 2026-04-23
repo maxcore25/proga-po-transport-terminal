@@ -68,3 +68,6 @@ README.md
 # Ignore cache directories
 .cache
 .next/cache
+
+# misc
+task
