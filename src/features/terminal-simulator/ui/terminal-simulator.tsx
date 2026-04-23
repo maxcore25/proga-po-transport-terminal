@@ -21,28 +21,9 @@ import { useTerminal } from '../model/use-terminal';
 import { useTerminalSelection } from '../model/use-terminal-selection';
 import { formatBalanceRub } from '@/shared/lib/utils';
 import { Label } from '@/shared/ui/label';
+import { StatusBadge } from './status-badge';
 
 const DEFAULT_FARE_AMOUNT = 3500;
-
-function StatusBadge({
-  isSuccess,
-  text,
-}: {
-  isSuccess: boolean;
-  text: string;
-}) {
-  return (
-    <span
-      className={
-        isSuccess
-          ? 'inline-flex rounded-md bg-emerald-500/15 px-2 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-300'
-          : 'inline-flex rounded-md bg-red-500/15 px-2 py-1 text-xs font-medium text-red-700 dark:text-red-300'
-      }
-    >
-      {text}
-    </span>
-  );
-}
 
 function TerminalSimulatorContent() {
   const { terminalSerial, status, errorMessage, hasKeys, keys, initialize } =
